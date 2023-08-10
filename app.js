@@ -23,9 +23,13 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+// set template engine
+app.engine('hbs', exphbs({ extname: '.hbs', defaultLayout: 'main' }))
+app.set('view engine', 'hbs')
+
 // routers
 app.get('/', (req, res) => {
-  res.send(`The app is running on http://localhost:${port}`)
+  res.render('index')
 })
 
 // start server
