@@ -2,6 +2,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const Todo = require('./models/todo')
 
 // 判斷執行環境載入 dotenv 環境變數
 if (process.env.NODE_ENV !== 'production') {
@@ -29,7 +30,10 @@ app.set('view engine', 'hbs')
 
 // routers
 app.get('/', (req, res) => {
-  res.render('index')
+  Todo.find()
+    .lean()
+    .then(todos => res.render('index', { todos }))
+    .catch(error => console.log(error))
 })
 
 // start server
