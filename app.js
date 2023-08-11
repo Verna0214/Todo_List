@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const Todo = require('./models/todo')
+const router = require('./routes')
 
 // 判斷執行環境載入 dotenv 環境變數
 if (process.env.NODE_ENV !== 'production') {
@@ -35,61 +36,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 // routers
-app.get('/todos/new', (req, res) => {
-  res.render('new')
-})
-
-app.get('/todos/:id/edit', (req, res) => {
-  const id = req.params.id
-  return Todo.findById(id)
-    .lean()
-    .then((todo) => res.render('edit', { todo }))
-    .catch(error => console.log(error))
-})
-
-app.get('/todos/:id', (req, res) => {
-  const id = req.params.id
-  return Todo.findById(id)
-    .lean()
-    .then((todo) => res.render('detail', { todo }))
-    .catch(error => console.log(error))
-})
-
-app.put('/todos/:id', (req, res) => {
-  const id = req.params.id
-  const { name, isDone } = req.body
-  Todo.findById(id)
-    .then((todo) => {
-      todo.name = name
-      todo.isDone = isDone === 'on'
-      return todo.save()
-    })
-    .then(() => res.redirect(`/todos/${id}`))
-    .catch(error => console.log(error))
-})
-
-app.delete('/todos/:id', (req, res) => {
-  const id = req.params.id
-  return Todo.findById(id)
-    .then((todo) => todo.deleteOne())
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
-
-app.post('/todos', (req, res) => {
-  const name = req.body.name
-  return Todo.create({ name })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
-
-app.get('/', (req, res) => {
-  Todo.find()
-    .lean()
-    .sort({ _id: 'desc' })
-    .then(todos => res.render('index', { todos }))
-    .catch(error => console.log(error))
-})
+app.use(router)
 
 // start server
 app.listen(port, () => {
