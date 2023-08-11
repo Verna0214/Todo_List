@@ -1,3 +1,6 @@
 <li>{{todo.name}}</li>
 <a href="/todos/{{todo._id}}/edit">Edit</a>
 <a href="/">Back</a>
+<form action="/todos/{{todo._id}}/delete" method="post" style="display: inline;">
+  <button>Delete</button>
+</form>
