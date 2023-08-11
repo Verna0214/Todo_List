@@ -2,6 +2,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
 const Todo = require('./models/todo')
 
 // 判斷執行環境載入 dotenv 環境變數
@@ -30,6 +31,8 @@ app.set('view engine', 'hbs')
 
 // use body-parser
 app.use(express.urlencoded({ extended: true }))
+// use method-override
+app.use(methodOverride('_method'))
 
 // routers
 app.get('/todos/new', (req, res) => {
@@ -52,7 +55,7 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   Todo.findById(id)
@@ -65,7 +68,7 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then((todo) => todo.deleteOne())
