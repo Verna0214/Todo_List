@@ -1,6 +1,14 @@
-<form action="/todos/{{todo._id}}?_method=PUT" method="POST">
-  <input type="checkbox" name="isDone" {{#if todo.isDone}} checked {{/if}}>
-  <input type="text" name="name" placeholder="name" value="{{todo.name}}">
-  <button type="submit">Save</button>
-  <a href="/">Back</a>
-</form>
+<div class="container my-5 d-flex justify-content-center align-items-center">
+  <form action="/todos/{{todo._id}}?_method=PUT" method="POST" class="d-flex align-items-center">
+    <div class="d-flex align-items-center">
+      <input class="form-check-input me-3" style="border-color: #007bff" type="checkbox" id="editCheckDefault" name="isDone"
+        {{#if todo.isDone}} checked {{/if}}>
+      <label class="form-check-label" for="editCheckDefault">
+    </div>
+    <input type="text" class="form-control me-5" name="name" placeholder="name" value="{{todo.name}}" style="border-color: red;">
+    <button type="submit" class="btn btn-secondary me-2">Save</button>
+    <a href="/" class="btn btn-success" role="button">Back</a>
+    
+  </form>
+</div>
+
