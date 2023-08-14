@@ -6,5 +6,14 @@ router.get('/login', (req, res) => {
   res.render('login')
 })
 
+// register
+router.get('/register', (req, res) => {
+  res.render('register')
+})
+
+// login post
+router.post('/login', (req, res) => {
+})
+
 
 module.exports = router
