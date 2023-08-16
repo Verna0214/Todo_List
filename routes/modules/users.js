@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../../models/user')
+const passport = require('passport')
 
 // login
 router.get('/login', (req, res) => {
@@ -13,16 +14,22 @@ router.get('/register', (req, res) => {
 })
 
 // login post
-router.post('/login', (req, res) => {
-})
+router.post('/login', passport.authenticate( 'local', {
+  successRedirect: '/',
+  failureRedirect: '/users/login'
+  }
+))
 
 // register post
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
 
-  if (password !== confirmPassword) {
+  if (!name || !email || !password || !confirmPassword) {
+    console.log('All the forms are required! ')
+    return res.render('register', { name, email, password, confirmPassword })
+  } else if (password !== confirmPassword) {
     console.log('confirmPassword is not correct.')
-    return res.redirect('/')
+    return res.render('register', { name, email, password, confirmPassword })
   }
 
   User.findOne({ email })
