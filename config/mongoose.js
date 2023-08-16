@@ -6,7 +6,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // set mongodb connection
-mongoose.connect(process.env.MONGODB_URI)
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:3000/todo_list'
+mongoose.connect(MONGODB_URI)
 const db = mongoose.connection
 // 判斷連線錯誤
 db.on('error', () => {
