@@ -4,12 +4,16 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
+// 判斷執行環境載入 dotenv 環境變數
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 const router = require('./routes')
 const usePassport = require('./config/passport')
 require('./config/mongoose')
 
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT
 const app = express()
 
 // set template engine
@@ -17,7 +21,7 @@ app.engine('hbs', exphbs({ extname: '.hbs', defaultLayout: 'main' }))
 app.set('view engine', 'hbs')
 // use express-session
 app.use(session({
-  secret: 'KeyboardDog',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
@@ -42,6 +46,6 @@ app.use((req, res, next) => {
 app.use(router)
 
 // start server
-app.listen(port, () => {
-  console.log(`The app is running on http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`The app is running on http://localhost:${PORT}`)
 })
