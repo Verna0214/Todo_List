@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
+const flash = require('connect-flash')
 
 const router = require('./routes')
 const usePassport = require('./config/passport')
@@ -27,10 +28,14 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 // use passport
 usePassport(app)
-// 
+// use connect-flash
+app.use(flash())
+// set res.locals
 app.use((req, res, next) => {
   res.locals.isLogin = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 // routers
