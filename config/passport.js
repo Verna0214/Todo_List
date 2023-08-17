@@ -12,12 +12,10 @@ module.exports = app => {
     User.findOne({ email })
       .then((user) => {
         if (!user) {
-          req.flash('warning_msg', '使用者未完成註冊！')
-          return done(null, false)
+          return done(null, false, req.flash('warning_msg', '使用者未完成註冊！'))
         }
         if (user.password !== password) {
-          req.flash('warning_msg', 'Email 或 Password 不正確！')
-          return done(null, false)
+          return done(null, false, req.flash('warning_msg', 'Email 或 Password 不正確！'))
         }
         return done(null, user)
       })
